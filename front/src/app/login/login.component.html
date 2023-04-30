@@ -1,0 +1,23 @@
+<div class="align-center">
+  <h2>Login</h2>
+  <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput
+             formControlName="username">
+      <mat-hint>Username</mat-hint>
+    </mat-form-field>
+
+    <mat-form-field>
+      <input matInput type="password"
+             formControlName="password">
+      <mat-hint>Password</mat-hint>
+    </mat-form-field>
+
+    <div class="btn-div">
+      <button type="submit"
+              class="login-btn">
+        Submit
+      </button>
+    </div>
+  </form>
+</div>
