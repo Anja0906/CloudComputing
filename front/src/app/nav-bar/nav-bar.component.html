@@ -2,6 +2,18 @@
   <mat-toolbar-row>
     <span>Team18</span>
     <span class="example-spacer"></span>
+    <button *ngIf="!(isLoggedIn$ | async)"
+            (click)="login()"
+            class="login"
+    >LogIn</button>
+    <button *ngIf="!(isLoggedIn$ | async)"
+            (click)="signup()"
+            class="logout"
+    >SignUp</button>
+    <button *ngIf="isLoggedIn$ | async"
+            (click)="logout()"
+            class="logout"
+    >LogOut</button>
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
       <mat-icon>menu</mat-icon>
     </button>

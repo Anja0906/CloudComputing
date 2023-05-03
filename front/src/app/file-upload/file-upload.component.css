@@ -77,6 +77,10 @@ p {
   border: dashed 3px #aaa;
 }
 
+.example-spacer {
+  flex: 1 1 auto;
+}
+
 .left-card-header{
   float: left;
 }
@@ -84,3 +88,4 @@ p {
   width: 10%;
   float: right;
 }
+
