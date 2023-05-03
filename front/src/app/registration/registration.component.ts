@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
-import {UserCredentials} from "../model";
+import {User, UserCredentials} from "../model";
+import {Router} from "@angular/router";
+import {CognitoService} from "../services/cognito.service";
+import {StorageService} from "../services/storage.service";
 
-class User {
-  email?: string;
-  password?: string;
-}
+
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
@@ -13,8 +13,9 @@ class User {
 })
 export class RegistrationComponent {
   registrationForm: FormGroup;
+  errorMessage: string = '';
 
-  constructor() {
+  constructor(private cognitoService:CognitoService,private router:Router,private storageService:StorageService) {
     this.registrationForm = new FormGroup({
       name: new FormControl('', [Validators.required]),
       surname: new FormControl('', [Validators.required]),
@@ -24,10 +25,19 @@ export class RegistrationComponent {
       password: new FormControl('', [Validators.required, Validators.minLength(8)])
     });
   }
+  register(user:User):void{
+    this.cognitoService.register(user)
+      .then(() =>{
+        this.storageService.saveUser(user);
+        this.router.navigate(['/verification'])
+      }).catch((error) =>{
+      alert(error.message);
+    })
+
+  }
 
   onSubmit() {
     let user : User = this.registrationForm.value;
-    console.log(user);
-    console.log(this.registrationForm.value);
+    this.register(user);
   }
 }

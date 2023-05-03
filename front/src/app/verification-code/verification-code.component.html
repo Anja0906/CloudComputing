@@ -1,0 +1,16 @@
+<div class="align-center">
+  <h2>Verify your account</h2>
+  <form [formGroup]="verificationForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Code</mat-label>
+      <input matInput formControlName="code">
+    </mat-form-field>
+
+    <div class="btn-div">
+      <button type="submit" class="login-btn" >
+        Submit Code
+      </button>
+    </div>
+  </form>
+</div>
+
