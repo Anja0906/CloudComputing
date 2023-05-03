@@ -27,6 +27,7 @@ import {MatListModule} from "@angular/material/list";
 import { DragDropDirective } from './directives/drag-drop.directive';
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {NgRoundPipeModule} from "angular-pipes";
+import { VerificationCodeComponent } from './verification-code/verification-code.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import {NgRoundPipeModule} from "angular-pipes";
     LoginComponent,
     RegistrationComponent,
     FileUploadComponent,
-    DragDropDirective
+    DragDropDirective,
+    VerificationCodeComponent
   ],
     imports: [
         BrowserModule,

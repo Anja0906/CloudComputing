@@ -1,0 +1,35 @@
+.align-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 90%;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  width: 20%;
+}
+
+.btn-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-div .login-btn {
+  padding: 0.7rem;
+  font-size: 14px;
+  background: orange;
+  outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: 100%;
+}
+
+

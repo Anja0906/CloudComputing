@@ -5,11 +5,11 @@ export class UserCredentials{
   password : string | undefined;
 }
 
-export class User {
-  name: string | undefined;
-  surname: string | undefined;
-  dateOfBirth: string | undefined;
-  username: string | undefined;
-  email: string | undefined;
-  password: string | undefined;
+export interface User{
+  name:string,
+  surname:string,
+  birthDate:string,
+  username:string,
+  email:string,
+  password:string,
 }
