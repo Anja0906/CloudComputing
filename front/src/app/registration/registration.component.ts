@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormBuilder, FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserCredentials} from "../model";
 
 class User {
   email?: string;
@@ -25,6 +26,8 @@ export class RegistrationComponent {
   }
 
   onSubmit() {
+    let user : User = this.registrationForm.value;
+    console.log(user);
     console.log(this.registrationForm.value);
   }
 }

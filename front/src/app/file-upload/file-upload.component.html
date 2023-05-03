@@ -1,0 +1,35 @@
+<div class="align-center">
+  <div class="left">
+    <div class="col-12 rmpm dropzone" appDrag (files)="filesDropped($event)">
+      <div class="text-wrapper">
+        <div class="centered">Drop your file here!</div>
+      </div>
+    </div>
+    <div class="btn-div">
+      <button type="button" class="login-btn" (click)="fileInput.click()">
+        <span>Upload</span>
+        <input #fileInput type="file" (change)="onFileInput(fileInput)" style="display:none;"/>
+      </button>
+    </div>
+  </div>
+  <div class="right">
+    <div #container class="container">
+      <div *ngFor="let file of files">
+        <mat-card class="card" *ngIf="file">
+          <mat-card-header style="display: inline-flex;">
+            <mat-card-title class="left-card-header">{{file.name}}</mat-card-title>
+            <mat-icon class="right-card-header" fontIcon="delete" (click)="onCancel(file)"></mat-icon>
+          </mat-card-header>
+          <mat-card-content>
+            <mat-card-footer>{{file.size/1024 | round: 2}} MB</mat-card-footer>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+    <div class="btn-div">
+      <button type="button" class="login-btn" (click)="upload()">
+        <span>Send files in storage</span>
+      </button>
+    </div>
+  </div>
+</div>

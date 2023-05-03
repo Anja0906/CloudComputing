@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
+import {UserCredentials} from "../model";
 
 
 @Component({
@@ -18,6 +19,7 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    console.log(this.loginForm.value);
+    let userCredentials : UserCredentials = this.loginForm.value;
+    console.log(userCredentials);
   }
 }
