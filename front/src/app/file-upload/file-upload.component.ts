@@ -26,7 +26,7 @@ export class FileUploadComponent {
 
   upload(): void {
     for (const file1 of this.files) {
-      console.log(this.file);
+      console.log(file1);
     }
   }
 
