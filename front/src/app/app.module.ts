@@ -28,6 +28,7 @@ import { DragDropDirective } from './directives/drag-drop.directive';
 import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {NgRoundPipeModule} from "angular-pipes";
 import { VerificationCodeComponent } from './verification-code/verification-code.component';
+import { MemeComponent } from './meme/meme.component';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import { VerificationCodeComponent } from './verification-code/verification-code
     RegistrationComponent,
     FileUploadComponent,
     DragDropDirective,
-    VerificationCodeComponent
+    VerificationCodeComponent,
+    MemeComponent
   ],
     imports: [
         BrowserModule,
