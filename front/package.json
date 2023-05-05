@@ -20,12 +20,16 @@
     "@angular/platform-browser": "^15.0.0",
     "@angular/platform-browser-dynamic": "^15.0.0",
     "@angular/router": "^15.0.0",
-    "angular-pipes": "^10.0.0",
+    "@aws-sdk/client-dynamodb": "^3.326.0",
+    "@aws-sdk/credential-providers": "^3.327.0",
+    "@aws-sdk/types": "^3.310.0",
     "amplify": "^0.0.11",
+    "angular-pipes": "^10.0.0",
     "aws-amplify": "^5.1.4",
+    "aws-sdk": "^2.1372.0",
     "material": "^0.5.3",
     "rxjs": "~7.5.0",
-    "tslib": "^2.3.0",
+    "tslib": "^2.5.0",
     "zone.js": "~0.12.0"
   },
   "devDependencies": {
