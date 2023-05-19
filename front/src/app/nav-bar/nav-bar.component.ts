@@ -32,4 +32,20 @@ export class NavBarComponent {
   signup() {
     this.router.navigate(["registration"])
   }
+
+  upload() {
+    this.router.navigate(["file-upload"])
+  }
+
+  overview() {
+    this.router.navigate(["overview"])
+  }
+
+  newAlbum() {
+    this.router.navigate(["new-album"])
+  }
+
+  myAlbums() {
+    this.router.navigate(["my-albums"])
+  }
 }

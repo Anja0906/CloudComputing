@@ -1,0 +1,36 @@
+.example-card{
+  width: 70%;
+  margin: 3rem;
+  background-color: #eee;
+  border: dashed 3px #aaa;
+}
+
+.parent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.action{
+  padding: 0.7rem;
+  font-size: 14px;
+  background: black;
+  outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: 24%;
+  margin: 0.5rem;
+}
+
+.action:hover{
+  background: orange;
+}
+
+.mdc-button{
+  color: white;
+}

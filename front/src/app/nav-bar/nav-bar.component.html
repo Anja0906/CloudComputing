@@ -17,8 +17,14 @@
             (click)="logout()"
             class="logout"
     >LogOut</button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
   </mat-toolbar-row>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="upload()">Upload item</button>
+    <button mat-menu-item (click)="overview()">All items</button>
+    <button mat-menu-item (click)="newAlbum()">Make photo album</button>
+    <button mat-menu-item (click)="myAlbums()">My albums</button>
+  </mat-menu>
 </mat-toolbar>

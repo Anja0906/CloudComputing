@@ -17,7 +17,9 @@
       <div *ngFor="let file of files">
         <mat-card class="card" *ngIf="file">
           <mat-card-header style="display: inline-flex;">
-            <mat-card-title class="left-card-header">{{file.name}}</mat-card-title>
+            <mat-card-title class="left-card-header">
+              <input class="inputField" matInput value="{{file.name}}">
+            </mat-card-title>
             <span class="example-spacer"></span>
             <mat-icon class="right-card-header" fontIcon="delete" (click)="onCancel(file)"></mat-icon>
           </mat-card-header>

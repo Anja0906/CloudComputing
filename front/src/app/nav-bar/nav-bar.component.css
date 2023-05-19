@@ -5,6 +5,7 @@
 .toolbar{
   background-color: black;
   color: white;
+  z-index: 1000;
 }
 
 .stickyBar {
@@ -39,3 +40,4 @@
   width: 5rem;
   margin: 0.3rem;
 }
+
