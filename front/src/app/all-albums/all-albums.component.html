@@ -1,0 +1,21 @@
+<div class="parent">
+  <button class="action fifty" (click)="newAlbum()">CREATE A NEW ALBUM</button>
+</div>
+<div class="card-container">
+  <mat-card class="example-card" *ngFor="let album of albums">
+    <mat-card-header>
+      <mat-card-title style="text-align: center; margin: 0.5rem;">Name: {{album.name}}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content style="text-align: center; margin: 0.5rem;">
+      <p>
+        Creation date: {{album.creationDate}}
+      </p>
+      <p>
+        Number of items: 1
+      </p>
+    </mat-card-content>
+    <mat-card-actions style="width: 80%">
+      <button class="action" (click)="more(album)">MORE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

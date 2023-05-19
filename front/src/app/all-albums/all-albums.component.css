@@ -1,0 +1,51 @@
+.example-card{
+  width: 20.5%;
+  margin: 2rem;
+  background-color: #eee;
+  border: dashed 3px #aaa;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.parent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.action{
+  padding: 0.7rem;
+  font-size: 14px;
+  background: black;
+  outline: none;
+  border: none;
+  border-radius: 0.5rem;
+  color: white;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 1px;
+  width: 100%;
+  margin: 0.5rem;
+}
+
+.action:hover{
+  background: orange;
+}
+
+.fifty{
+  margin: 2rem;
+  width: 50%;
+  background-color: orange;
+}
+
+.fifty:hover{
+  background-color: black;
+}

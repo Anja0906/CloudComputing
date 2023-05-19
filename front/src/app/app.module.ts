@@ -29,6 +29,11 @@ import {CdkVirtualScrollViewport} from "@angular/cdk/scrolling";
 import {NgRoundPipeModule} from "angular-pipes";
 import { VerificationCodeComponent } from './verification-code/verification-code.component';
 import { MemeComponent } from './meme/meme.component';
+import { ItemsOverviewComponent } from './items-overview/items-overview.component';
+import { ItemDetailsComponent } from './item-details/item-details.component';
+import { AllAlbumsComponent } from './all-albums/all-albums.component';
+import { AlbumComponent } from './album/album.component';
+import {MatChipsModule} from "@angular/material/chips";
 
 @NgModule({
   declarations: [
@@ -39,7 +44,11 @@ import { MemeComponent } from './meme/meme.component';
     FileUploadComponent,
     DragDropDirective,
     VerificationCodeComponent,
-    MemeComponent
+    MemeComponent,
+    ItemsOverviewComponent,
+    ItemDetailsComponent,
+    AllAlbumsComponent,
+    AlbumComponent
   ],
     imports: [
         BrowserModule,
@@ -62,7 +71,8 @@ import { MemeComponent } from './meme/meme.component';
         MatCardModule,
         MatListModule,
         CdkVirtualScrollViewport,
-        NgRoundPipeModule
+        NgRoundPipeModule,
+        MatChipsModule
     ],
   providers: [],
   bootstrap: [AppComponent],

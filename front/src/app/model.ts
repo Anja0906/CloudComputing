@@ -1,4 +1,5 @@
 import {FormControl, Validators} from "@angular/forms";
+import {FileHandle} from "./directives/drag-drop.directive";
 
 export class UserCredentials{
   username : string | undefined;
@@ -12,4 +13,30 @@ export interface User{
   username:string,
   email:string,
   password:string,
+}
+
+export interface TaggedPerson{
+  name:string;
+  surname:string;
+  email:string;
+}
+
+export interface FileModel{
+  id:string;
+  name:string;
+  type:string;
+  size:number;
+  creationDate:Date;
+  lastUpdate:Date;
+  caption:string;
+  taggedPersons?:TaggedPerson[];
+  photoAlbum?: PhotoAlbum;
+  content?: File;
+}
+
+export interface PhotoAlbum{
+  id:string;
+  name:string;
+  photoAlbum?: PhotoAlbum;
+  creationDate: Date;
 }
