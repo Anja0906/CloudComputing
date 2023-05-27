@@ -36,7 +36,7 @@ export class LoginComponent {
     this.cognitoService.signIn(email,password)
       .then((data)=>{
         // DEBUG
-        this.http.post('https://emlbbtgle6.execute-api.eu-central-1.amazonaws.com/dev/todos', {}).subscribe(console.log);
+        this.http.post('https://749995w0n8.execute-api.eu-central-1.amazonaws.com/dev/todos', {}).subscribe(console.log);
         return data;
       })
       .then((data) =>{
