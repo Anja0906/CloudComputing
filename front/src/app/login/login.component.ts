@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {StorageService} from "../services/storage.service";
 import { DynamoDbService } from '../services/dynamo-db.service';
 import {enviroment} from "../../enviroments/enviroment";
+import { HttpClient } from '@angular/common/http';
 
 
 @Component({
@@ -17,7 +18,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user?: UserCredentials;
 
-  constructor(private data: DynamoDbService, private cognitoService:CognitoService, private router:Router, private storageService:StorageService) {
+  constructor(private data: DynamoDbService, private cognitoService:CognitoService, private router:Router, private storageService:StorageService, private http: HttpClient) {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)])
@@ -33,6 +34,11 @@ export class LoginComponent {
       return;
 
     this.cognitoService.signIn(email,password)
+      .then((data)=>{
+        // DEBUG
+        this.http.post('https://emlbbtgle6.execute-api.eu-central-1.amazonaws.com/dev/todos', {}).subscribe(console.log);
+        return data;
+      })
       .then((data) =>{
         this.storageService.saveUser(data['attributes']);
 

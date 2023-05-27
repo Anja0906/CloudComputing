@@ -6,5 +6,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./meme.component.css']
 })
 export class MemeComponent {
-
+  
 }

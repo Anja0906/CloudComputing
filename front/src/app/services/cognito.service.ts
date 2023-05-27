@@ -16,13 +16,15 @@ export class CognitoService {
   }
   register(user: User) : Promise<any> {
     return Auth.signUp({
-      username:user.username,
+      username:user.email,
       password:user.password,
       attributes:{
         given_name:user.name,
         family_name:user.surname,
         birthdate: user.birthDate,
-        email:user.email
+        email:user.email,
+        phone_number:user.phone_number,
+        'custom:email_of_inviter': user.email_of_inviter
       }
     });
   }

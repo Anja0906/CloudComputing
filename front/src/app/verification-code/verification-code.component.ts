@@ -25,7 +25,7 @@ export class VerificationCodeComponent {
     let activationCode = this.verificationForm.value.code;
     let user = this.storageService.getUser();
 
-    this.cognitoService.activate(activationCode, user['username'])
+    this.cognitoService.activate(activationCode, user.email)
       .then(() =>{
         this.router.navigate(['login']);
       }).catch((error) =>{

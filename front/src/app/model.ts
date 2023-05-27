@@ -13,6 +13,8 @@ export interface User{
   username:string,
   email:string,
   password:string,
+  email_of_inviter:string|null|undefined,
+  phone_number:string
 }
 
 export interface TaggedPerson{

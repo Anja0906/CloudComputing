@@ -20,7 +20,7 @@ import {MatNativeDateModule} from "@angular/material/core";
 import { FileUploadComponent } from './file-upload/file-upload.component';
 import {MatProgressBarModule} from "@angular/material/progress-bar";
 import {FileUploadService} from "./file-upload/file-upload-service/file-upload.service";
-import {HttpClientModule} from "@angular/common/http";
+import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {MatDividerModule} from "@angular/material/divider";
 import {MatCardModule} from "@angular/material/card";
 import {MatListModule} from "@angular/material/list";
@@ -34,6 +34,7 @@ import { ItemDetailsComponent } from './item-details/item-details.component';
 import { AllAlbumsComponent } from './all-albums/all-albums.component';
 import { AlbumComponent } from './album/album.component';
 import {MatChipsModule} from "@angular/material/chips";
+import { TokenInterceptor } from './services/jwt.service';
 
 @NgModule({
   declarations: [
@@ -74,7 +75,7 @@ import {MatChipsModule} from "@angular/material/chips";
         NgRoundPipeModule,
         MatChipsModule
     ],
-  providers: [],
+  providers: [{ provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true }],
   bootstrap: [AppComponent],
 
 })
