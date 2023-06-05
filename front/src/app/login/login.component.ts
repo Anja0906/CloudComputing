@@ -4,7 +4,6 @@ import {UserCredentials} from "../model";
 import {CognitoService} from "../services/cognito.service";
 import {Router} from "@angular/router";
 import {StorageService} from "../services/storage.service";
-import { DynamoDbService } from '../services/dynamo-db.service';
 import {enviroment} from "../../enviroments/enviroment";
 import { HttpClient } from '@angular/common/http';
 
@@ -18,7 +17,7 @@ export class LoginComponent {
   loginForm: FormGroup;
   user?: UserCredentials;
 
-  constructor(private data: DynamoDbService, private cognitoService:CognitoService, private router:Router, private storageService:StorageService, private http: HttpClient) {
+  constructor(private cognitoService:CognitoService, private router:Router, private storageService:StorageService, private http: HttpClient) {
     this.loginForm = new FormGroup({
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required, Validators.minLength(8)])

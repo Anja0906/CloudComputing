@@ -11,7 +11,7 @@ export class CognitoService {
   constructor() {
     Amplify.configure({
       Auth:enviroment.cognito,
-      Storage: {AWSS3: enviroment.storage},
+      Storage: {AWSS3: ''},
     })
   }
   register(user: User) : Promise<any> {

@@ -1,10 +1,7 @@
 import {Component, Input} from '@angular/core';
-import {FileUploadService} from "./file-upload-service/file-upload.service";
 import {FileHandle} from "../directives/drag-drop.directive";
-import { DynamoDbService } from '../services/dynamo-db.service';
 import { enviroment } from 'src/enviroments/enviroment';
 import { StorageService } from '../services/storage.service';
-import { S3Service } from '../services/s3.service';
 
 
 @Component({
@@ -16,7 +13,7 @@ export class FileUploadComponent {
   shortLink: string = "";
   loading: boolean = false;
   file: File = new File([], "");
-  constructor(private dynamo: DynamoDbService, private storageService: StorageService, private s3: S3Service) { }
+  constructor(private storageService: StorageService) { }
 
   ngOnInit(): void {}
 
@@ -33,24 +30,12 @@ export class FileUploadComponent {
       TableName: 'Files',
       Item: {
         // 'user_sub': { S: this.storageService.getUser()['sub'] },
-        'user_sub': { S: enviroment.sdk.region + ':' + this.storageService.getUser()['sub'] },
       }
     };
 
     for (const file1 of this.files) {
       console.log(file1);
-      const key = this.generateS3Key(file1.name)
-      const s3_url = await this.s3.uploadFile(file1, key)
-      params.Item = {
-        ...params.Item,
-        file_id: { S: key},
-        size: { S: file1.size.toString()},
-        type: { S: file1.type},
-        created: { S: Date.now().toString()},
-        modified: { S: Date.now().toString()},
-        s3_url: { S: s3_url},
-      }
-      this.dynamo.putItem(params)
+      // !!!!!!!
     }
 
     this.files = []
