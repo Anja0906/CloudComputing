@@ -41,3 +41,14 @@
   margin: 0.3rem;
 }
 
+img[routerLink] {
+  cursor: pointer;
+}
+
+button {
+  min-width: fit-content;
+}
+
+button:hover {
+  opacity: 0.9;
+}

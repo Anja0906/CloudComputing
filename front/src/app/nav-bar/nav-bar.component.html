@@ -1,6 +1,6 @@
 <mat-toolbar class="toolbar stickyBar">
   <mat-toolbar-row>
-    <img src="assets/logo.png" style="height: 90%"/>
+    <img routerLink="/" src="assets/logo.png" style="height: 90%"/>
     <a routerLink="/file-upload"><button *ngIf="isLoggedIn$ | async"
             class="login"
     >Upload file</button></a>
