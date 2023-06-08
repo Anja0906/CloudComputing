@@ -17,28 +17,46 @@ export interface User{
   phone_number:string
 }
 
-export interface TaggedPerson{
-  name:string;
-  surname:string;
-  email:string;
+// export interface UniversalFile{
+//   id:string;
+//   name:string;
+//   type:string;
+//   size:number;
+//   creationDate:Date;
+//   lastUpdate:Date;
+//   caption:string;
+//   taggedPersons?:TaggedPerson[];
+//   Album?: Album;
+//   content?: File;
+// }
+
+export interface UniversalFile {
+  user_sub: string;
+  file_id: string;
+  name: string;
+  type: string;
+  size: number;
+  creation_date: string;
+  last_update: string;
+  shared_with_emails: string[];
+  album_id: string;
+  data: string | undefined;
+  s3_url: string | undefined;
 }
 
-export interface FileModel{
-  id:string;
-  name:string;
-  type:string;
-  size:number;
-  creationDate:Date;
-  lastUpdate:Date;
-  caption:string;
-  taggedPersons?:TaggedPerson[];
-  photoAlbum?: PhotoAlbum;
-  content?: File;
-}
+// export interface Album{
+//   id:string;
+//   name:string;
+//   Album?: Album;
+//   creationDate: Date;
+// }
 
-export interface PhotoAlbum{
-  id:string;
-  name:string;
-  photoAlbum?: PhotoAlbum;
-  creationDate: Date;
+export interface Album {
+  user_sub: string;
+  album_id: string;
+  name: string;
+  creation_date: string;
+  last_update: string;
+  shared_with_emails: string[];
+  files_ids: {file_id: string}[]
 }

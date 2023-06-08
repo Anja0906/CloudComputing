@@ -6,6 +6,6 @@ export const enviroment = {
   },
   lambda:{
     region: 'eu-central-1',
-    url: 'https://749995w0n8.execute-api.eu-central-1.amazonaws.com/dev-'
+    url: 'https://749995w0n8.execute-api.eu-central-1.amazonaws.com/dev'
   }
 }

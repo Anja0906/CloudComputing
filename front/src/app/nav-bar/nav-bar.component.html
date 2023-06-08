@@ -1,19 +1,19 @@
 <mat-toolbar class="toolbar stickyBar">
   <mat-toolbar-row>
     <img routerLink="/" src="assets/logo.png" style="height: 90%"/>
-    <a routerLink="/file-upload"><button *ngIf="isLoggedIn$ | async"
+    <a routerLink="/file-upload"><button *ngIf="storageService.loggedIn.value"
             class="login"
     >Upload file</button></a>
     <span class="example-spacer"></span>
-    <button *ngIf="!(isLoggedIn$ | async)"
+    <button *ngIf="!(storageService.loggedIn.value)"
             (click)="login()"
             class="login"
     >LogIn</button>
-    <button *ngIf="!(isLoggedIn$ | async)"
+    <button *ngIf="!(storageService.loggedIn.value)"
             (click)="signup()"
             class="logout"
     >SignUp</button>
-    <button *ngIf="isLoggedIn$ | async"
+    <button *ngIf="storageService.loggedIn.value"
             (click)="logout()"
             class="logout"
     >LogOut</button>

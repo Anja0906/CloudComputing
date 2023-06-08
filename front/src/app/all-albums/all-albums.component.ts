@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PhotoAlbum} from "../model";
+import {Album} from "../model";
 import {DataService} from "../services/data.service";
 
 @Component({
@@ -9,14 +9,15 @@ import {DataService} from "../services/data.service";
   styleUrls: ['./all-albums.component.css']
 })
 export class AllAlbumsComponent implements OnInit{
+  myAlbums: Album[] = [];
+  sharedAlbums: Album[] = [];
 
-  albums:PhotoAlbum[] = []
   constructor(private router:Router, private dataService : DataService) {
 
   }
 
-  more(album: PhotoAlbum) {
-    this.dataService.setSelectedAlbum(album);
+  more(album: Album) {
+    this.dataService.selectedAlbum  = album;
     this.router.navigate(["album"])
   }
 
@@ -24,7 +25,10 @@ export class AllAlbumsComponent implements OnInit{
   }
 
   ngOnInit(): void {
-    this.dataService.getAllFiles();
-    this.albums = this.dataService.getAllAlbums()
+    this.dataService.getAllFilesMeta();
+    this.dataService.getAllAlbums().subscribe(data=>{
+      this.myAlbums = data.my_albums;
+      this.sharedAlbums = data.shared_albums;
+    })
   }
 }

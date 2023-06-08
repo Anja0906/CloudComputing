@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import {Router} from "@angular/router";
-import {FileModel, PhotoAlbum, TaggedPerson} from "../model";
+import {UniversalFile, Album} from "../model";
 import {DataService} from "../services/data.service";
 
 @Component({
@@ -10,14 +10,23 @@ import {DataService} from "../services/data.service";
 })
 export class ItemsOverviewComponent {
 
-  fileModels : FileModel[] = [];
+  myFileModels : UniversalFile[] = [];
+  sharedFileModels : UniversalFile[] = [];
 
   constructor(private router : Router, private dataService:DataService) {
-    this.fileModels = dataService.getAllFiles();
+    dataService.getAllFilesMeta().subscribe(
+      {
+        next: fileModels=>{
+          this.myFileModels = fileModels.my_files;
+          this.sharedFileModels = fileModels.shared_files;
+        },
+        error: err=>alert(err.error)
+      }
+    );
   }
 
-  more(file:FileModel) {
-    this.dataService.setSelectedFile(file);
+  more(file:UniversalFile) {
+    this.dataService.selectedFile = file;
     this.router.navigate(["item-details"])
   }
 }

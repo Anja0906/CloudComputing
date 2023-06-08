@@ -1,12 +1,30 @@
+<div class="title" *ngIf="myFileModels">Your files:</div>
 <div class="card-container">
-  <mat-card class="example-card" *ngFor="let file of fileModels">
+  <mat-card class="example-card" *ngFor="let file of myFileModels">
     <mat-card-header>
       <mat-card-title style="text-align: center; margin: 0.5rem;">{{file.name}}</mat-card-title>
-      <mat-card-subtitle style="text-align: center; margin: 0.5rem;">{{file.size}}</mat-card-subtitle>
+      <mat-card-subtitle style="text-align: center; margin: 0.5rem;">{{file.size}}B</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image class="photo" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+    <img mat-card-image class="photo" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu">
     <mat-card-actions style="width: 80%">
       <button class="action" (click)="more(file)">MORE</button>
     </mat-card-actions>
   </mat-card>
+</div>
+<mat-divider></mat-divider>
+<div class="title" *ngIf="sharedFileModels">Files shared with you:</div>
+<div class="card-container">
+  <mat-card class="example-card" *ngFor="let file of sharedFileModels">
+    <mat-card-header>
+      <mat-card-title style="text-align: center; margin: 0.5rem;">{{file.name}}</mat-card-title>
+      <mat-card-subtitle style="text-align: center; margin: 0.5rem;">{{file.size}}B</mat-card-subtitle>
+    </mat-card-header>
+    <img mat-card-image class="photo" src="https://material.angular.io/assets/img/examples/shiba2.jpg"
+      alt="Photo of a Shiba Inu">
+    <mat-card-actions style="width: 80%">
+      <button class="action" (click)="more(file)">MORE</button>
+    </mat-card-actions>
+  </mat-card>
+  <mat-divider></mat-divider>
 </div>

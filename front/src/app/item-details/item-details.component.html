@@ -1,31 +1,35 @@
 <div class="parent">
   <mat-card class="example-card" *ngIf="selectedItem">
     <mat-card-header class="parent">
-      <mat-card-title>Name: {{selectedItem.name}}</mat-card-title>
-      <mat-card-subtitle>Size: {{selectedItem.size}}</mat-card-subtitle>
+      <mat-card-title *ngIf="!changeMode">Name: {{selectedItem.name}}</mat-card-title>
+      <mat-card-title *ngIf="changeMode">Name: <input matInput [(ngModel)]="selectedItem.name"></mat-card-title>
+      <mat-card-subtitle>Size: {{selectedItem.size}}B</mat-card-subtitle>
     </mat-card-header>
-    <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Preview">
+    <input *ngIf="changeMode" type="file" #fileInput (change)="upload($event)"/>
+    <img mat-card-image [src]="imgUrl" alt="Preview">
     <mat-card-content>
-      <p style="margin-left: 0.5rem; margin-top: 1rem;">
-        {{selectedItem.caption}}
-      </p>
-      <div style="margin-left: 0.5rem; margin-top: 1rem;">
+      <div style="margin-left: 0.5rem; margin-top: 1rem;" *ngIf="selectedItem.shared_with_emails || changeMode">
         <p>
-          Tagged persons:
+          Shared with persons:
         </p>
         <mat-chip-listbox aria-label="Dog selection">
-          <mat-chip *ngFor="let person of selectedItem.taggedPersons">
+          <mat-chip *ngFor="let person of selectedItem.shared_with_emails">
             <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/>
-            {{person.email}}
+            {{person}}
+            <button *ngIf="changeMode" class="action" (click)="unshare(person)">X</button>
           </mat-chip>
+          <input *ngIf="changeMode" matInput [(ngModel)]="newPerson">
+          <button *ngIf="changeMode" class="action" (click)="share()">Share with {{newPerson}}</button>
         </mat-chip-listbox>
       </div>
+
     </mat-card-content>
     <mat-card-actions style="margin-top: 1rem;">
-      <button class="action" (click)="change(selectedItem)">CHANGE</button>
-      <button class="action" (click)="delete(selectedItem)">DELETE</button>
-      <button class="action" (click)="download(selectedItem)">DOWNLOAD</button>
-      <button class="action" (click)="makeNewAlbum(selectedItem)">MAKE NEW ALBUM</button>
+      <button *ngIf="!changeMode" class="action" (click)="changeMode=true">CHANGE</button>
+      <button *ngIf="changeMode" class="action" (click)="change()">SAVE</button>
+      <button class="action" (click)="delete()">DELETE</button>
+      <button *ngIf="!changeMode" class="action" (click)="download()">DOWNLOAD</button>
+      <button class="action" (click)="makeNewAlbum()">MAKE NEW ALBUM</button>
     </mat-card-actions>
   </mat-card>
   <h2 *ngIf="!selectedItem">

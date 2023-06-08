@@ -33,11 +33,6 @@ export class LoginComponent {
       return;
 
     this.cognitoService.signIn(email,password)
-      .then((data)=>{
-        // DEBUG
-        this.http.post('https://749995w0n8.execute-api.eu-central-1.amazonaws.com/dev/todos', {}).subscribe(console.log);
-        return data;
-      })
       .then((data) =>{
         this.storageService.saveUser(data['attributes']);
 

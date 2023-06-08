@@ -1,99 +1,61 @@
 import { Injectable } from '@angular/core';
-import {FileModel, PhotoAlbum, TaggedPerson} from "../model";
+import {UniversalFile, Album} from "../model";
+import { HttpClient } from '@angular/common/http';
+import { enviroment } from 'src/enviroments/enviroment';
+import { Observable } from 'rxjs';
+
+interface FilesMetas {
+    my_files: UniversalFile[],
+    shared_files: UniversalFile[]
+}
+
+interface AlbumsMetas {
+    my_albums: Album[],
+    shared_albums: Album[]
+}
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
 
-  private selectedFile ?: FileModel;
-  private selectedAlbum ?: PhotoAlbum;
-  private fileModels:FileModel[] = [];
-  private albumFiles:FileModel[] = [];
-  private albums:PhotoAlbum[] = [];
+  public selectedFile ?: UniversalFile;
+  public selectedAlbum ?: Album;
 
-  constructor() { }
-
-  getAllFiles(){
-    for (let i = 1; i <= 10; i++) {
-      const taggedPerson: TaggedPerson = {
-        name: 'Person ' + i,
-        surname: 'Surname ' + i,
-        email: 'person' + i + '@example.com'
-      };
-
-      const photoAlbum: PhotoAlbum = {
-        id: 'album-' + i,
-        name: 'Album ' + i,
-        photoAlbum: undefined,
-        creationDate: new Date()
-      };
-
-      const file: FileModel = {
-        id: 'file-' + i,
-        name: 'File ' + i,
-        type: 'Type ' + i,
-        size: i * 1024, // Size in bytes
-        creationDate: new Date(),
-        lastUpdate: new Date(),
-        caption: 'Caption ' + i,
-        taggedPersons: [taggedPerson],
-        photoAlbum: photoAlbum,
-        content: undefined
-      };
-
-      this.fileModels.push(file);
-    }
-    return this.fileModels;
-  }
-
-  getSelectedFile(){
-    return this.selectedFile;
-  }
-
-  setSelectedFile(file:FileModel){
-    this.selectedFile = file;
-  }
-
-  getSelectedAlbum(){
-    return this.selectedAlbum;
-  }
-
-  setSelectedAlbum(album:PhotoAlbum){
-    this.selectedAlbum = album;
-    for (let fileModel of this.fileModels) {
-      if (album.name===fileModel.photoAlbum?.name){
-        this.albumFiles.push(fileModel);
-      }
-    }
-  }
-
-  getPhotosForSelectedAlbum(){
-    return this.albumFiles;
-  }
-
-  getAllAlbums(){
-    for (let fileModel of this.fileModels) {
-      if (fileModel.photoAlbum) {
-        this.albums.push(fileModel.photoAlbum)
-      }
-    }
-    return this.albums;
-  }
-
-  changeFile(selectedItem: FileModel) {
+  constructor(private http: HttpClient) {
 
   }
 
-  deleteFile(selectedItem: FileModel) {
 
+  getAllFilesMeta(): Observable<FilesMetas> {
+    return this.http.get<FilesMetas>(enviroment.lambda.url + '/file');
   }
 
-  downloadFile(selectedItem: FileModel) {
-
+  getAllAlbums() {
+    return this.http.get<AlbumsMetas>(enviroment.lambda.url + '/album');
   }
 
-  makeNewAlbum(selectedItem: FileModel) {
+  getAlbum(album:Album){
+    return this.http.get<Album | {files: UniversalFile[]}>(enviroment.lambda.url + '/album/' + album.album_id);
+  }
+
+  changeFile(selectedItem: UniversalFile): Observable<UniversalFile> {
+    return this.http.put<UniversalFile>(enviroment.lambda.url + '/file', selectedItem);
+  }
+
+  deleteFile(selectedItem: UniversalFile): Observable<UniversalFile> {
+    return this.http.delete<UniversalFile>(enviroment.lambda.url + '/file', {body: selectedItem});
+  }
+
+  downloadFile(selectedItem: UniversalFile): Observable<UniversalFile> {
+    return this.http.get<UniversalFile>(`${enviroment.lambda.url}/file/${selectedItem.file_id}`);
+  }
+
+  uploadFile(item: { name: string; type: string; data: string; }) {
+    return this.http.post<UniversalFile>(enviroment.lambda.url + '/file', item);
+  }
+
+  makeNewAlbum(selectedItem: UniversalFile) {
 
   }
 }

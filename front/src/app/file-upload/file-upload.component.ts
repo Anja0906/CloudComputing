@@ -2,6 +2,7 @@ import {Component, Input} from '@angular/core';
 import {FileHandle} from "../directives/drag-drop.directive";
 import { enviroment } from 'src/enviroments/enviroment';
 import { StorageService } from '../services/storage.service';
+import { DataService } from '../services/data.service';
 
 
 @Component({
@@ -13,7 +14,7 @@ export class FileUploadComponent {
   shortLink: string = "";
   loading: boolean = false;
   file: File = new File([], "");
-  constructor(private storageService: StorageService) { }
+  constructor(private dataService: DataService, private storageService: StorageService) { }
 
   ngOnInit(): void {}
 
@@ -34,8 +35,22 @@ export class FileUploadComponent {
     };
 
     for (const file1 of this.files) {
-      console.log(file1);
-      // !!!!!!!
+      const reader = new FileReader();
+      reader.onload = (e: any) => {
+        console.log(e);
+        this.dataService.uploadFile({
+            name: file1.name,
+            type: file1.type,
+            data: e.target.result.split(',')[1]
+        }).subscribe({
+          next: file=>{
+            console.log(file);
+          },
+          error: err=>alert(err.error)
+        })
+      };
+
+      reader.readAsDataURL(file1);
     }
 
     this.files = []

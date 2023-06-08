@@ -9,14 +9,9 @@ import {CognitoService} from "../services/cognito.service";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  isLoggedIn$ = this.storageService.loggedIn;
-
-  constructor(private storageService: StorageService, private router: Router, private cognitoService:CognitoService) {}
+  constructor(public storageService: StorageService, private router: Router, private cognitoService:CognitoService) {}
 
   ngOnInit() {
-    this.storageService.loggedIn.subscribe(isLoggedIn => {
-      this.isLoggedIn$.next(isLoggedIn);
-    });
   }
 
   login() {
