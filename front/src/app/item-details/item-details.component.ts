@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {UniversalFile} from "../model";
+import {Album, UniversalFile} from "../model";
 import {DataService} from "../services/data.service";
 import {Location} from '@angular/common';
 import { Router } from '@angular/router';
@@ -16,8 +16,11 @@ export class ItemDetailsComponent implements OnInit{
   newPerson: string = "";
   file?: File;
   imgUrl: string = "https://material.angular.io/assets/img/examples/shiba2.jpg";
+  toAlbumActive: boolean = false;
+  newAlbum: string = "";
+  albums: Album[] = [];
 
-  constructor(private dataService:DataService, private location: Location) {
+  constructor(private dataService:DataService, private location: Location, private router : Router) {
   }
 
   ngOnInit(){
@@ -28,6 +31,11 @@ export class ItemDetailsComponent implements OnInit{
         if (file.type.includes('image')) this.imgUrl = `data:${file.type};base64, ${file.data}`;
       }
     });
+    this.dataService.getAllAlbums().subscribe({
+      next: data=>{
+        this.albums = data.my_albums;
+      }
+    })
   }
 
   change() {
@@ -77,8 +85,8 @@ export class ItemDetailsComponent implements OnInit{
     link.remove();
   }
 
-  makeNewAlbum() {
-    this.dataService.makeNewAlbum(this.selectedItem);
+  toAlbum() {
+    this.toAlbumActive = true;
   }
 
   unshare(email: string) {
@@ -96,5 +104,33 @@ export class ItemDetailsComponent implements OnInit{
     
     this.selectedItem.shared_with_emails.push(this.newPerson);
     this.newPerson = "";
+  }
+
+  
+  moveToNewAlbum() {
+    if (this.newAlbum) {
+      this.dataService.createAlbum(this.newAlbum).subscribe({
+        next: data=>{
+          this.moveToAlbum(data);
+        },
+        error: err=>{alert(err.error)}
+      });
+      this.toAlbumActive = false;
+    } else {
+      alert("Name can not be empty!");
+    }
+  }
+
+  moveToAlbum(album: Album) {
+    this.selectedItem.album_id = album.album_id;
+    this.toAlbumActive = false;
+    this.dataService.changeFile(this.selectedItem).subscribe({
+      next: data=>{
+        this.dataService.selectedFile = data;
+        this.dataService.selectedAlbum = album;
+        this.router.navigate(['album']);
+      },
+      error: err=>{alert(err.error)}
+    })
   }
 }

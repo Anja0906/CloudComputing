@@ -3,6 +3,8 @@ import {FileHandle} from "../directives/drag-drop.directive";
 import { enviroment } from 'src/enviroments/enviroment';
 import { StorageService } from '../services/storage.service';
 import { DataService } from '../services/data.service';
+import { Album } from '../model';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -14,9 +16,26 @@ export class FileUploadComponent {
   shortLink: string = "";
   loading: boolean = false;
   file: File = new File([], "");
-  constructor(private dataService: DataService, private storageService: StorageService) { }
+  album?: Album;
+  constructor(private dataService: DataService, private storageService: StorageService, private route: ActivatedRoute) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.route.queryParams.subscribe((params) => {
+      if (params['album_id']) {
+        this.dataService.getAlbum({album_id: params['album_id']}).subscribe({
+          next: album=>{
+            this.album = album;
+          }
+        })
+      } else {
+        this.dataService.getAlbum({album_id: this.storageService.getUser()['sub']}).subscribe({
+          next: album=>{
+            this.album = album;
+          }
+        })
+      }
+    });
+  }
 
   files: File[] = [];
 
@@ -41,7 +60,8 @@ export class FileUploadComponent {
         this.dataService.uploadFile({
             name: file1.name,
             type: file1.type,
-            data: e.target.result.split(',')[1]
+            data: e.target.result.split(',')[1],
+            album_id: this.album?.album_id
         }).subscribe({
           next: file=>{
             console.log(file);

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import {StorageService} from "../services/storage.service";
 import {Router} from "@angular/router";
 import {CognitoService} from "../services/cognito.service";
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,7 +10,7 @@ import {CognitoService} from "../services/cognito.service";
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  constructor(public storageService: StorageService, private router: Router, private cognitoService:CognitoService) {}
+  constructor(public storageService: StorageService, private router: Router, private cognitoService:CognitoService, private dataService : DataService) {}
 
   ngOnInit() {
   }
@@ -37,10 +38,19 @@ export class NavBarComponent {
   }
 
   newAlbum() {
-    this.router.navigate(["new-album"])
+    this.dataService.createAlbum("New Album").subscribe({
+      next: album => {
+        this.dataService.selectedAlbum  = album;
+        this.router.navigate(["album"])
+      }
+    })
   }
 
   myAlbums() {
     this.router.navigate(["my-albums"])
+  }
+
+  inviteFamily() {
+    this.router.navigate(["family"])
   }
 }

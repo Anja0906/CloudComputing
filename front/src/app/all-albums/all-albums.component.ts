@@ -22,6 +22,12 @@ export class AllAlbumsComponent implements OnInit{
   }
 
   newAlbum() {
+    this.dataService.createAlbum("New Album").subscribe({
+      next: album => {
+        this.dataService.selectedAlbum  = album;
+        this.router.navigate(["album"])
+      }
+    })
   }
 
   ngOnInit(): void {

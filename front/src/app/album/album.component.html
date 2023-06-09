@@ -1,14 +1,41 @@
 <div class="card-container" *ngIf="album">
   <mat-card class="title-card">
     <mat-card-header>
-      <mat-card-title style="text-align: center; margin: 0.5rem;">Name: {{album.name}}</mat-card-title>
+      <mat-card-title style="text-align: center; margin: 0.5rem;" *ngIf="!changeMode">Name: {{album.name}}</mat-card-title>
+      <mat-card-title style="text-align: center; margin: 0.5rem;" *ngIf="changeMode">Name: <input matInput [(ngModel)]="album.name"></mat-card-title>
       <mat-card-title style="text-align: center; margin: 0.5rem;">Creation date: {{album.creation_date}}</mat-card-title>
     </mat-card-header>
   </mat-card>
+  <mat-card>
+    <mat-card-content>
+      <div style="margin-left: 0.5rem; margin-top: 1rem;" *ngIf="album.shared_with_emails || changeMode">
+        <p>
+          Shared with persons:
+        </p>
+        <mat-chip-listbox aria-label="Dog selection">
+          <mat-chip *ngFor="let person of album.shared_with_emails">
+            <img matChipAvatar src="https://material.angular.io/assets/img/examples/shiba1.jpg" alt="Photo of a Shiba Inu"/>
+            {{person}}
+            <button *ngIf="changeMode" class="action" (click)="unshare(person)">X</button>
+          </mat-chip>
+          <input *ngIf="changeMode" matInput [(ngModel)]="newPerson">
+          <button *ngIf="changeMode" class="action" (click)="share()">Share with {{newPerson}}</button>
+        </mat-chip-listbox>
+      </div>
+
+    </mat-card-content>
+    <mat-card-actions style="margin-top: 1rem;">
+      <button *ngIf="!changeMode" class="action" (click)="changeMode=true">CHANGE</button>
+      <button *ngIf="changeMode" class="action" (click)="change()">SAVE</button>
+      <button class="action" (click)="uploadMoreFiles()">UPLOAD FILES</button>
+      <button class="action" (click)="delete()">DELETE</button>
+    </mat-card-actions>
+  </mat-card>
   <mat-card class="example-card" *ngFor="let file of files">
     <mat-card-header>
-      <mat-card-title style="text-align: center; margin: 0.5rem;">{{file.name}}</mat-card-title>
+      <mat-card-title style="text-align: center; margin: 0.5rem; overflow: hidden;">{{file.name}}</mat-card-title>
       <mat-card-subtitle style="text-align: center; margin: 0.5rem;">{{file.size}}</mat-card-subtitle>
+      <button class="action" *ngIf="changeMode" (click)="deleteFile(file)">DELETE</button>
     </mat-card-header>
     <img mat-card-image class="photo" src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
     <mat-card-actions style="width: 80%">

@@ -35,8 +35,16 @@ export class DataService {
     return this.http.get<AlbumsMetas>(enviroment.lambda.url + '/album');
   }
 
-  getAlbum(album:Album){
-    return this.http.get<Album | {files: UniversalFile[]}>(enviroment.lambda.url + '/album/' + album.album_id);
+  getAlbum(album:{album_id: string}){
+    return this.http.get<Album & {files: UniversalFile[]}>(enviroment.lambda.url + '/album/' + album.album_id);
+  }
+
+  changeAlbum(album:Album){
+    return this.http.put<Album>(enviroment.lambda.url + '/album', album);
+  }
+
+  deleteAlbum(album:Album){
+    return this.http.delete<Album>(enviroment.lambda.url + '/album', {body: album});
   }
 
   changeFile(selectedItem: UniversalFile): Observable<UniversalFile> {
@@ -51,11 +59,13 @@ export class DataService {
     return this.http.get<UniversalFile>(`${enviroment.lambda.url}/file/${selectedItem.file_id}`);
   }
 
-  uploadFile(item: { name: string; type: string; data: string; }) {
+  uploadFile(item: { name: string; type: string; data: string; album_id: string | undefined }) {
     return this.http.post<UniversalFile>(enviroment.lambda.url + '/file', item);
   }
 
-  makeNewAlbum(selectedItem: UniversalFile) {
-
+  createAlbum(name: string): Observable<Album> {
+    return this.http.post<Album>(enviroment.lambda.url + '/album', {
+      name: name,
+    });
   }
 }

@@ -29,7 +29,12 @@
       <button *ngIf="changeMode" class="action" (click)="change()">SAVE</button>
       <button class="action" (click)="delete()">DELETE</button>
       <button *ngIf="!changeMode" class="action" (click)="download()">DOWNLOAD</button>
-      <button class="action" (click)="makeNewAlbum()">MAKE NEW ALBUM</button>
+      <button *ngIf="!changeMode && !toAlbumActive" class="action" (click)="toAlbum()">MOVE TO ALBUM</button>
+    </mat-card-actions>
+    <mat-card-actions style="margin-top: 1rem;" *ngIf="!changeMode && toAlbumActive">
+      <input matInput placeholder="New Album" [(ngModel)]="newAlbum">
+      <button class="action" (click)="moveToNewAlbum()">To new album {{newAlbum}}</button>
+      <button class="action" *ngFor="let album of albums" (click)="moveToAlbum(album)">To {{album.name}}</button>
     </mat-card-actions>
   </mat-card>
   <h2 *ngIf="!selectedItem">
