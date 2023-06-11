@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import {UniversalFile, Album} from "../model";
+import {UniversalFile, Album, FamilyInvite} from "../model";
 import { HttpClient } from '@angular/common/http';
 import { enviroment } from 'src/enviroments/enviroment';
-import { Observable } from 'rxjs';
+import { Observable, concat } from 'rxjs';
+import { StorageService } from './storage.service';
 
 interface FilesMetas {
     my_files: UniversalFile[],
@@ -21,9 +22,18 @@ export class DataService {
 
   public selectedFile ?: UniversalFile;
   public selectedAlbum ?: Album;
+  public invites: FamilyInvite[] = [];
 
-  constructor(private http: HttpClient) {
-
+  constructor(public storageService: StorageService, private http: HttpClient) {
+    setInterval(()=>{
+      if (storageService.loggedIn.value)
+      this.http.get<{my_invites: FamilyInvite[]}>(enviroment.lambda.url + '/invite').subscribe({
+        next: invites=>{
+          this.invites = invites.my_invites;
+        },
+        error: err=>console.log(err.error)
+      })
+    }, 10000);
   }
 
 
@@ -66,6 +76,18 @@ export class DataService {
   createAlbum(name: string): Observable<Album> {
     return this.http.post<Album>(enviroment.lambda.url + '/album', {
       name: name,
+    });
+  }
+
+  confirm(invite: FamilyInvite) {
+    this.http.post<FamilyInvite>(enviroment.lambda.url + '/invite/accept', invite).subscribe({
+      error: err=>alert(err.error)
+    });
+  }
+
+  decline(invite: FamilyInvite) {
+    this.http.post<FamilyInvite>(enviroment.lambda.url + '/invite/decline', invite).subscribe({
+      error: err=>alert(err.error)
     });
   }
 }

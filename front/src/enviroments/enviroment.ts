@@ -1,11 +1,11 @@
 export const enviroment = {
   cognito:{
     region: 'eu-central-1',
-    userPoolId: 'eu-central-1_Y7Wi1Ke6f',
-    userPoolWebClientId: '3g8s1ghmdd1i1g22f21tu5dnot',
+    userPoolId: 'eu-central-1_kZgsmWmg8',
+    userPoolWebClientId: '6aatua4bgmenm86jr7ho8ie648',
   },
   lambda:{
     region: 'eu-central-1',
-    url: 'https://749995w0n8.execute-api.eu-central-1.amazonaws.com/dev'
+    url: 'https://gqqwcm2c0c.execute-api.eu-central-1.amazonaws.com/dev'
   }
 }

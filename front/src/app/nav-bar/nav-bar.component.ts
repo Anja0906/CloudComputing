@@ -10,7 +10,7 @@ import { DataService } from '../services/data.service';
   styleUrls: ['./nav-bar.component.css']
 })
 export class NavBarComponent {
-  constructor(public storageService: StorageService, private router: Router, private cognitoService:CognitoService, private dataService : DataService) {}
+  constructor(public storageService: StorageService, private router: Router, private cognitoService:CognitoService, public dataService : DataService) {}
 
   ngOnInit() {
   }

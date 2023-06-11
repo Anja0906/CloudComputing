@@ -52,3 +52,11 @@ button {
 button:hover {
   opacity: 0.9;
 }
+
+.notification {
+  padding: 1em;
+  border-radius: 1em;
+  color: brown;
+  background-color: rgb(255, 224, 229);
+  cursor: pointer;
+}

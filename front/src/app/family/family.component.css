@@ -1,0 +1,17 @@
+.request {
+    margin: 1em;
+    padding: 1em;
+    border-radius: 1em;
+    color: darkgoldenrod;
+    background-color: rgb(255, 241, 205);
+}
+
+.request .confirm {
+    background-color: green;
+    color: white;
+}
+
+.request .decline {
+    background-color: red;
+    color: white;
+}

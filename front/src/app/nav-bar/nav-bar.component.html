@@ -5,6 +5,8 @@
             class="login"
     >Upload file</button></a>
     <span class="example-spacer"></span>
+    <div class="notification" (click)="inviteFamily()" *ngIf="dataService.invites.length">You have {{dataService.invites.length}} share requests from your family</div>
+    <span class="example-spacer"></span>
     <button *ngIf="!(storageService.loggedIn.value)"
             (click)="login()"
             class="login"
@@ -17,7 +19,7 @@
             (click)="logout()"
             class="logout"
     >LogOut</button>
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
+    <button *ngIf="storageService.loggedIn.value" mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" [matMenuTriggerFor]="menu">
       <mat-icon>menu</mat-icon>
     </button>
   </mat-toolbar-row>

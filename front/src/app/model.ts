@@ -60,3 +60,10 @@ export interface Album {
   shared_with_emails: string[];
   files_ids: string[];
 }
+
+export interface FamilyInvite {
+  invited_email: string;
+  inviter_email: string;
+  invited_name: string;
+  invite_status: string;
+}

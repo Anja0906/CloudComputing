@@ -1,0 +1,9 @@
+<div *ngFor="let invite of dataService.invites">
+    <div class="request">
+        You have request from {{invite.invited_name}}. Click 
+        <button class="confirm" (click)="dataService.confirm(invite)">Confirm</button> 
+        to share all existing albums. Or click 
+        <button class="decline" (click)="dataService.decline(invite)">Decline</button>
+        to prohibit.
+    </div>
+</div>

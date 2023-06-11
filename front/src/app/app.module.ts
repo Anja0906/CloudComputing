@@ -34,6 +34,7 @@ import { AllAlbumsComponent } from './all-albums/all-albums.component';
 import { AlbumComponent } from './album/album.component';
 import { MatChipsModule } from "@angular/material/chips";
 import { TokenInterceptor } from './services/jwt.service';
+import { FamilyComponent } from './family/family.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import { TokenInterceptor } from './services/jwt.service';
     ItemsOverviewComponent,
     ItemDetailsComponent,
     AllAlbumsComponent,
-    AlbumComponent
+    AlbumComponent,
+    FamilyComponent
   ],
   imports: [
     BrowserModule,

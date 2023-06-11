@@ -9,6 +9,7 @@ import {ItemsOverviewComponent} from "../app/items-overview/items-overview.compo
 import {ItemDetailsComponent} from "../app/item-details/item-details.component";
 import {AllAlbumsComponent} from "../app/all-albums/all-albums.component";
 import {AlbumComponent} from "../app/album/album.component";
+import { FamilyComponent } from 'src/app/family/family.component';
 
 const routes: Routes = [
   { path: '', component: MemeComponent},
@@ -20,6 +21,7 @@ const routes: Routes = [
   { path: 'my-albums', component: AllAlbumsComponent},
   { path: 'album', component: AlbumComponent},
   { path: 'verification', component: VerificationCodeComponent},
+  { path: 'family', component: FamilyComponent},
 ];
 
 @NgModule({
