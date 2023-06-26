@@ -1,0 +1,256 @@
+service: cloud-computations-serverless
+
+frameworkVersion: "3"
+
+provider:
+  name: aws
+  runtime: nodejs18.x
+  region: eu-central-1
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action: "dynamodb:*"
+          Resource:
+            - "Fn::GetAtt": [ FilesTable, Arn ]
+        - Effect: Allow
+          Action: "dynamodb:*"
+          Resource:
+            - "Fn::GetAtt": [ AlbumsTable, Arn ]
+        - Effect: Allow
+          Action: "dynamodb:*"
+          Resource:
+            - "Fn::GetAtt": [ FamilyInvitesTable, Arn ]
+        - Effect: Allow
+          Action: "cognito-idp:*"
+          Resource:
+            - "Fn::GetAtt": [ UserPool, Arn ]
+        - Effect: Allow
+          Action: "s3:*"
+          Resource: !Sub "arn:aws:s3:::${UserUploadBucket}/*"
+
+package:
+  # Create separate zip for each Lambda function
+  individually: true
+  patterns:
+    # Exclude everything (each Lambda will specify which directory should be included)
+    # To exclude use '!' prefix
+    - '!**/**'
+    - 'build/common/**'
+    - 'node_modules/**'
+
+functions:
+  post_file:
+    handler: build/file.postFile
+    package:
+      include: 'build/file.js'
+    events:
+      - http:
+          path: file
+          method: post
+          cors: true
+          authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - sub
+                - email
+
+  get_file:
+    handler: build/file.getFile
+    package:
+      include: 'build/file.js'
+    events:
+      - http:
+          path: file/{file_id}
+          method: get
+          cors: true
+          request:
+            parameters:
+              paths:
+                file_id: true
+          authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - sub
+                - email
+                
+  get_files:
+    handler: build/file.getFiles
+    package:
+      include: 'build/file.js'
+    events:
+      - http:
+          path: file
+          method: get
+          cors: true
+          authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - sub
+                - email
+                
+  edit_file:
+    handler: build/file.editFile
+    package:
+      include: 'build/file.js'
+    events:
+      - http:
+          path: file
+          method: put
+          cors: true
+          authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - sub
+                - email
+           
+  delete_file:
+    handler: build/file.deleteFile
+    package:
+      include: 'build/file.js'
+    events:
+      - http:
+          path: file
+          method: delete
+          cors: true
+          authorizer:
+              name: PrivateAuthorizer
+              type: COGNITO_USER_POOLS
+              arn:
+                Fn::GetAtt:
+                  - UserPool
+                  - Arn
+              claims:
+                - sub
+                - email   
+
+
+resources:
+  Resources:
+    FilesTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: Files
+        AttributeDefinitions:
+          - AttributeName: file_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: file_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+          
+    AlbumsTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: Albums
+        AttributeDefinitions:
+          - AttributeName: album_id
+            AttributeType: S
+        KeySchema:
+          - AttributeName: album_id
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+    
+    FamilyInvitesTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: FamilyInvites
+        AttributeDefinitions:
+          - AttributeName: invited_email
+            AttributeType: S
+          - AttributeName: inviter_email
+            AttributeType: S
+        KeySchema:
+          - AttributeName: invited_email
+            KeyType: HASH
+          - AttributeName: inviter_email
+            KeyType: RANGE
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+
+    UserUploadBucket:
+      Type: AWS::S3::Bucket
+      DeletionPolicy: Retain
+      Properties:
+        BucketName: tim18-cloud-computing-user-upload
+
+    UserPool:
+      Type: AWS::Cognito::UserPool
+      DeletionPolicy: Retain
+      Properties:
+        UserPoolName: MyUserPool
+        Policies:
+          PasswordPolicy:
+            MinimumLength: 8
+            RequireLowercase: true
+            RequireNumbers: true
+            RequireSymbols: true
+            RequireUppercase: true
+        Schema:
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Name: email
+            Required: true
+            StringAttributeConstraints:
+              MinLength: "3"
+              MaxLength: "255"
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: true
+            Name: phone_number
+            Required: true
+            StringAttributeConstraints:
+              MinLength: "3"
+              MaxLength: "255"
+          - AttributeDataType: String
+            DeveloperOnlyAttribute: false
+            Mutable: false
+            Name: email_of_inviter
+            Required: false
+            StringAttributeConstraints:
+              MinLength: "3"
+              MaxLength: "255"
+        AutoVerifiedAttributes:
+          - email
+        UsernameAttributes:
+          - email
+        EmailVerificationMessage: "Your verification code is {####}."
+        EmailVerificationSubject: "Verify your email address"
+
+    UserPoolClient:
+      Type: 'AWS::Cognito::UserPoolClient'
+      DeletionPolicy: Retain
+      Properties:
+        ClientName: MyUserPoolClient
+        GenerateSecret: False
+        UserPoolId:
+          Ref: UserPool
