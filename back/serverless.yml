@@ -248,6 +248,76 @@ functions:
               - sub
               - email
 
+  post_sign_up:
+    handler: build/invites.postSignUp
+    package:
+      include: 'build/invites.js'
+    events:
+      - cognitoUserPool:
+          pool: MyUserPool
+          trigger: PostConfirmation
+          existing: true
+
+  get_invites:
+    handler: build/invites.getInvites
+    package:
+      include: 'build/invites.js'
+    events:
+      - http:
+          path: invite
+          method: get
+          cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - sub
+              - email
+
+  accept_invite:
+    handler: build/invites.postAccept
+    package:
+      include: 'build/invites.js'
+    events:
+      - http:
+          path: invite/accept
+          method: post
+          cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - sub
+              - email
+
+  decline_invite:
+    handler: build/invites.postDecline
+    package:
+      include: 'build/invites.js'
+    events:
+      - http:
+          path: invite/decline
+          method: post
+          cors: true
+          authorizer:
+            name: PrivateAuthorizer
+            type: COGNITO_USER_POOLS
+            arn:
+              Fn::GetAtt:
+                - UserPool
+                - Arn
+            claims:
+              - sub
+              - email
+
 resources:
   Resources:
     FilesTable:
