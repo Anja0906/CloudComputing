@@ -6,6 +6,7 @@ import {Router} from "@angular/router";
 import {StorageService} from "../services/storage.service";
 import {enviroment} from "../../enviroments/enviroment";
 import { HttpClient } from '@angular/common/http';
+import { webSocket, WebSocketSubject } from 'rxjs/webSocket';
 
 
 @Component({
@@ -16,6 +17,7 @@ import { HttpClient } from '@angular/common/http';
 export class LoginComponent {
   loginForm: FormGroup;
   user?: UserCredentials;
+  connection?: WebSocketSubject<any>;
 
   constructor(private cognitoService:CognitoService, private router:Router, private storageService:StorageService, private http: HttpClient) {
     this.loginForm = new FormGroup({
@@ -24,6 +26,13 @@ export class LoginComponent {
     });
   }
 
+  subrscribeOnNotifications(sub: string) {
+    this.connection = webSocket('wss://m9bimzzpda.execute-api.eu-central-1.amazonaws.com/dev');
+    this.connection.next({message: sub});
+    this.connection.subscribe(data=>{
+      console.log(data);
+    })
+  }
 
   onSubmit() {
     let email = this.loginForm.value.username;
@@ -35,6 +44,9 @@ export class LoginComponent {
     this.cognitoService.signIn(email,password)
       .then((data) =>{
         this.storageService.saveUser(data['attributes']);
+
+
+        this.subrscribeOnNotifications(data['attributes']['sub']);
 
         this.router.navigate(['']);        
       })

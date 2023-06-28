@@ -1,5 +1,5 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult, Handler } from 'aws-lambda';
-import { Album, FamilyInvite } from '../../../../../Downloads/cloud-computations-serverless-master/lambdas/common/entities';
+import { Album, FamilyInvite } from './common/entities';
 import { DynamoDB } from 'aws-sdk';
 
 

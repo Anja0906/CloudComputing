@@ -25,15 +25,15 @@ export class DataService {
   public invites: FamilyInvite[] = [];
 
   constructor(public storageService: StorageService, private http: HttpClient) {
-    setInterval(()=>{
-      if (storageService.loggedIn.value)
-      this.http.get<{my_invites: FamilyInvite[]}>(enviroment.lambda.url + '/invite').subscribe({
-        next: invites=>{
-          this.invites = invites.my_invites;
-        },
-        error: err=>console.log(err.error)
-      })
-    }, 10000);
+    // setInterval(()=>{
+    //   if (storageService.loggedIn.value)
+    //   this.http.get<{my_invites: FamilyInvite[]}>(enviroment.lambda.url + '/invite').subscribe({
+    //     next: invites=>{
+    //       this.invites = invites.my_invites;
+    //     },
+    //     error: err=>console.log(err.error)
+    //   })
+    // }, 10000);
   }
 
 

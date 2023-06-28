@@ -1,5 +1,6 @@
 import DynamoDB from "aws-sdk/clients/dynamodb";
-import { Album, UniversalFile } from "../../../../../../Downloads/cloud-computations-serverless-master/lambdas/common/entities";
+import { ApiGatewayManagementApi } from "aws-sdk";
+import { Album, UniversalFile } from "./entities";
 import { error } from "console";
 
 export function generateSafeS3Name(originalName: string) {
@@ -106,4 +107,44 @@ export async function changeAlbum(newAlbum: Album, userSub: string, dynamoDB: Dy
     }
   }).promise();
   return { album: album, error: undefined };
+}
+
+export async function doesFileNameExists(albumId: string, fileName: string, dynamoDB: DynamoDB.DocumentClient): Promise<boolean> {
+  const params = {
+    TableName: 'Files',
+    FilterExpression: 'album_id = :id AND #fname = :fname',
+    ExpressionAttributeValues: {
+      ':id': albumId,
+      ':fname': fileName
+    },
+    ExpressionAttributeNames: {
+      "#fname": "name"
+    }
+  };
+  let responce = await dynamoDB.scan(params).promise();
+  return (responce.Count ?? 0) > 0;
+}
+
+export async function notifyUser(postData: any, userSub: string, dynamoDB: DynamoDB.DocumentClient) {
+  let responce = await dynamoDB.get({
+    TableName: "UserWebSockets",
+    Key: {
+      user_sub: userSub
+    }
+  }).promise();
+  let webSocket = responce.Item as {
+    user_sub: string,
+    socket_id: string,
+    route_key: string,
+    domain_name: string,
+    stage: string
+  };
+  if (!webSocket) return;
+
+  const apigwManagementApi = new ApiGatewayManagementApi({
+    apiVersion: '2018-11-29',
+    endpoint: webSocket.domain_name + '/' + webSocket.stage
+  });
+
+  await apigwManagementApi.postToConnection({ ConnectionId: webSocket.socket_id, Data: postData }).promise();
 }

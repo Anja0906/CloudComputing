@@ -12,6 +12,10 @@ provider:
         - Effect: Allow
           Action: "dynamodb:*"
           Resource:
+            - "Fn::GetAtt": [ UserWebSocketsTable, Arn ]
+        - Effect: Allow
+          Action: "dynamodb:*"
+          Resource:
             - "Fn::GetAtt": [ FilesTable, Arn ]
         - Effect: Allow
           Action: "dynamodb:*"
@@ -318,8 +322,55 @@ functions:
               - sub
               - email
 
+  web_socket_connect:
+    handler: build/notifications.connect
+    package:
+      include: 'build/notifications.js'
+    events:
+      - websocket:
+          route: $connect
+
+  web_socket_register_user:
+    handler: build/notifications.defaultHandler
+    package:
+      include: 'build/notifications.js'
+    events:
+      - websocket:
+          route: $default
+
+
 resources:
   Resources:
+    # UserLockTable:
+    #   Type: AWS::DynamoDB::Table
+    #   DeletionPolicy: Retain
+    #   Properties:
+    #     TableName: UserLocks
+    #     AttributeDefinitions:
+    #       - AttributeName: user_sub
+    #         AttributeType: S
+    #     KeySchema:
+    #       - AttributeName: user_sub
+    #         KeyType: HASH
+    #     ProvisionedThroughput:
+    #       ReadCapacityUnits: 1
+    #       WriteCapacityUnits: 1
+    
+    UserWebSocketsTable:
+      Type: AWS::DynamoDB::Table
+      DeletionPolicy: Retain
+      Properties:
+        TableName: UserWebSockets
+        AttributeDefinitions:
+          - AttributeName: user_sub
+            AttributeType: S
+        KeySchema:
+          - AttributeName: user_sub
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
+  
     FilesTable:
       Type: AWS::DynamoDB::Table
       DeletionPolicy: Retain
